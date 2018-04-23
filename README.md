@@ -1,8 +1,6 @@
 # What is Filebeat?
 Filebeat is a lightweight, open source shipper for log file data. As the next-generation Logstash Forwarder, Filebeat tails logs and quickly sends this information to Logstash for further parsing and enrichment.
 
-![alt text](https://static-www.elastic.co/assets/blta28996a125bb8b42/packetbeat-fish-nodes-bkgd.png?q=755 "Filebeat logo")
-
 > https://www.elastic.co/products/beats/filebeat
 
 
@@ -61,7 +59,7 @@ filter {
 
     grok {
       match => { 
-        "message" => "\[%{WORD:containerName}\] %{GREEDYDATA:message_remainder}"
+        "message" => "\[%{USERNAME:containerName}\] %{GREEDYDATA:message_remainder}"
       }
     }
 
