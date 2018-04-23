@@ -75,7 +75,16 @@ filter {
 
 }
 ```
+Output example creating index with `containerName`:
 
+```
+output {
+  elasticsearch {
+    hosts => ["http://localhost:9200"]
+    index => "%{containerName}-%{+YYYY.MM.dd}"
+  }
+}
+```
 
 # User Feedback
 ## Issues
