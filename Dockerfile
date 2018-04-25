@@ -15,9 +15,7 @@ ENV     PATH $PATH:${FILEBEAT_HOME}
 WORKDIR /opt/
 
 RUN     apk add --update python curl && \
-        wget "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" \
-             "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
-        apk add --allow-untrusted glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
+        apk add --allow-untrusted ./bin/glibc-2.21-r2.apk ./bin/glibc-bin-2.21-r2.apk && \
         /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib
 
 RUN     curl -sL ${FILEBEAT_URL} | tar xz -C .
