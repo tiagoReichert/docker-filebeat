@@ -88,10 +88,3 @@ output {
   }
 }
 ```
-
-# User Feedback
-## Issues
-If you have any problems with or questions about this image, please contact me through a [GitHub issue](https://github.com/bargenson/docker-filebeat/issues).
-
-## Contributing
-You are invited to the [GitHub repo](https://github.com/bargenson/docker-filebeat) to contribute new features, fixes, or updates, large or small.
