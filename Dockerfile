@@ -14,8 +14,10 @@ ENV     PATH $PATH:${FILEBEAT_HOME}
 
 WORKDIR /opt/
 
+COPY bin /tmp
+
 RUN     apk add --update python curl && \
-        apk add --allow-untrusted ./bin/glibc-2.21-r2.apk ./bin/glibc-bin-2.21-r2.apk && \
+        apk add --allow-untrusted /tmp/glibc-2.21-r2.apk /tmp/glibc-bin-2.21-r2.apk && \
         /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib
 
 RUN     curl -sL ${FILEBEAT_URL} | tar xz -C .
