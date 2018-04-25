@@ -23,6 +23,9 @@ Three environment variables are needed:
 * `LOGSTASH_HOST`: to specify on which server runs your Logstash
 * `LOGSTASH_PORT`: to specify on which port listens your Logstash for beats inputs
 * `SHIPPER_NAME`: to specify the Filebeat shipper name (deafult: the container ID) 
+And one is optional:
+* `LABALED_ONLY`: set this variable if you want to collect logs only from containers with the label `GATHER_LOGS`
+
 
 The docker-compose service definition should look as follows:
 ```

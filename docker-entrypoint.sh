@@ -14,10 +14,11 @@ if [ "$1" = 'start' ]; then
 
   getRunningContainers() {
     curl --no-buffer -s -XGET --unix-socket /tmp/docker.sock http:/containers/json | python -c "
-import json, sys
+import json, sys, os
 containers=json.loads(sys.stdin.readline())
-for container in containers:
-  print(container['Id'])
+if os.environ.get('LABELED_ONLY'):
+    containers = (c for c in containers if c.get('Labels').get('GATHER_LOGS'))
+print ('\n'.join(c['Id'] for c in containers))
 "
   }
 
