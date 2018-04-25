@@ -4,6 +4,7 @@ set -e
 if [ "$1" = 'start' ]; then
 
   CONTAINERS_FOLDER=/tmp/containers
+  LOGS_FOLDER=tmp/log
 
   setConfiguration() {
     KEY=$1
@@ -42,7 +43,7 @@ print(container['Name'])
     echo "Processing $CONTAINER..."
     createContainerFile $CONTAINER
     CONTAINER_NAME=`getContainerName $CONTAINER`
-    curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > /tmp/log/${CONTAINER}.log
+    curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > ${LOGS_FOLDER}/${CONTAINER}.log
     echo "Disconnected from $CONTAINER."
     removeContainerFile $CONTAINER
   }
@@ -69,6 +70,7 @@ print(container['Name'])
 
   rm -rf "$CONTAINERS_FOLDER"
   mkdir "$CONTAINERS_FOLDER"
+  mkdir "$LOGS_FOLDER"
 
   echo "Initializing Filebeat..."
   ${FILEBEAT_HOME}/filebeat -e -v &
