@@ -14,7 +14,7 @@ Start Filebeat as follows:
 
 ```
 $ docker run -d 
-   -v /var/run/docker.sock:/tmp/docker.sock 
+   -v /var/run/docker.sock:/tmp/docker.sock -v /tmp/logs_$(hostname):/tmp
    -e LOGSTASH_HOST=monitoring.xyz -e LOGSTASH_PORT=5044 -e SHIPPER_NAME=$(hostname) 
    bargenson/filebeat
 ```
@@ -34,6 +34,7 @@ filebeat:
   restart: unless-stopped
   volumes:
    - /var/run/docker.sock:/tmp/docker.sock
+   - /tmp/logs_$(hostname):/tmp
   environment:
    - LOGSTASH_HOST=monitoring.xyz
    - LOGSTASH_PORT=5044
@@ -88,10 +89,3 @@ output {
   }
 }
 ```
-
-# User Feedback
-## Issues
-If you have any problems with or questions about this image, please contact me through a [GitHub issue](https://github.com/bargenson/docker-filebeat/issues).
-
-## Contributing
-You are invited to the [GitHub repo](https://github.com/bargenson/docker-filebeat) to contribute new features, fixes, or updates, large or small.

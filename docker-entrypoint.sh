@@ -4,7 +4,6 @@ set -e
 if [ "$1" = 'start' ]; then
 
   CONTAINERS_FOLDER=/tmp/containers
-  NAMED_PIPE=/tmp/pipe
 
   setConfiguration() {
     KEY=$1
@@ -43,7 +42,7 @@ print(container['Name'])
     echo "Processing $CONTAINER..."
     createContainerFile $CONTAINER
     CONTAINER_NAME=`getContainerName $CONTAINER`
-    curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > $NAMED_PIPE
+    curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > /tmp/log/${CONTAINER}.log
     echo "Disconnected from $CONTAINER."
     removeContainerFile $CONTAINER
   }
@@ -69,12 +68,10 @@ print(container['Name'])
   fi
 
   rm -rf "$CONTAINERS_FOLDER"
-  rm -rf "$NAMED_PIPE"
   mkdir "$CONTAINERS_FOLDER"
-  mkfifo -m a=rw "$NAMED_PIPE"
 
   echo "Initializing Filebeat..."
-  cat $NAMED_PIPE | ${FILEBEAT_HOME}/filebeat -e -v &
+  ${FILEBEAT_HOME}/filebeat -e -v &
 
   while true; do
     CONTAINERS=`getRunningContainers`
