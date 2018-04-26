@@ -4,7 +4,7 @@ set -e
 if [ "$1" = 'start' ]; then
 
   CONTAINERS_FOLDER=/tmp/containers
-  LOGS_FOLDER=tmp/log
+  LOGS_FOLDER=/tmp/log
 
   setConfiguration() {
     KEY=$1
