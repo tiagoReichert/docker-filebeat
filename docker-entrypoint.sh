@@ -70,7 +70,7 @@ print(container['Name'])
 
   rm -rf "$CONTAINERS_FOLDER"
   mkdir "$CONTAINERS_FOLDER"
-  mkdir "$LOGS_FOLDER"
+  mkdir -p "$LOGS_FOLDER"
 
   echo "Initializing Filebeat..."
   ${FILEBEAT_HOME}/filebeat -e -v &
