@@ -34,18 +34,12 @@ print(container['Name'])
     touch "$CONTAINERS_FOLDER/$1"
   }
 
-  removeContainerFile() {
-    rm "$CONTAINERS_FOLDER/$1"
-  }
-
   collectContainerLogs() {
     local CONTAINER=$1
-    echo "Processing $CONTAINER..."
     createContainerFile $CONTAINER
     CONTAINER_NAME=`getContainerName $CONTAINER`
     curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > ${LOGS_FOLDER}/${CONTAINER}.log
-    echo "Disconnected from $CONTAINER."
-    removeContainerFile $CONTAINER
+    echo "Processed $CONTAINER."
   }
 
   if [ -n "${LOGSTASH_HOST+1}" ]; then
@@ -73,7 +67,7 @@ print(container['Name'])
   mkdir -p "$LOGS_FOLDER"
 
   echo "Initializing Filebeat..."
-  ${FILEBEAT_HOME}/filebeat -e -v &
+  ${FILEBEAT_HOME}/filebeat -e -c ${FILEBEAT_HOME}filebeat.yml -v &
 
   while true; do
     CONTAINERS=`getRunningContainers`
