@@ -3,7 +3,6 @@ Filebeat is a lightweight, open source shipper for log file data. As the next-ge
 
 > https://www.elastic.co/products/beats/filebeat
 
-
 # Why this image?
 
 This image uses the Docker API to collect the logs of all the running containers on the same machine and ship them to a Logstash. No need to install Filebeat manually on your host or inside your images. Just use this image to create a container that's going to handle everything for you :-)
@@ -15,8 +14,8 @@ Start Filebeat as follows:
 ```
 $ docker run -d 
    -v /var/run/docker.sock:/tmp/docker.sock -v /tmp/logs_$(hostname):/tmp
-   -e LOGSTASH_HOST=monitoring.xyz -e LOGSTASH_PORT=5044 -e SHIPPER_NAME=$(hostname) 
-   bargenson/filebeat
+   -e LOGSTASH_HOST=127.0.0.1 -e LOGSTASH_PORT=5044 -e SHIPPER_NAME=$(hostname) -e LABALED_ONLY=true
+   tiagoreichert/docker-filebeat
 ```
 
 Three environment variables are needed:
@@ -30,15 +29,16 @@ And one is optional:
 The docker-compose service definition should look as follows:
 ```
 filebeat:
-  image: bargenson/filebeat
+  image: tiagoreichert/docker-filebeat
   restart: unless-stopped
   volumes:
    - /var/run/docker.sock:/tmp/docker.sock
    - /tmp/logs_$(hostname):/tmp
   environment:
-   - LOGSTASH_HOST=monitoring.xyz
+   - LOGSTASH_HOST=127.0.0.1
    - LOGSTASH_PORT=5044
-   - SHIPPER_NAME=aWonderfulName
+   - SHIPPER_NAME=$(hostname)
+   - LABALED_ONLY=true
 ```
 
 
