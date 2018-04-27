@@ -34,11 +34,16 @@ print(container['Name'])
     touch "$CONTAINERS_FOLDER/$1"
   }
 
+  removeContainerFile() {
+    rm "$CONTAINERS_FOLDER/$1"
+  }
+
   collectContainerLogs() {
     local CONTAINER=$1
     createContainerFile $CONTAINER
     CONTAINER_NAME=`getContainerName $CONTAINER`
     curl -s --no-buffer -XGET --unix-socket /tmp/docker.sock "http://localhost/containers/$CONTAINER/logs?stderr=1&stdout=1" | sed "s;^;[$CONTAINER_NAME] ;" > ${LOGS_FOLDER}/${CONTAINER}.log
+    removeContainerFile $CONTAINER
     echo "Processed $CONTAINER."
   }
 
