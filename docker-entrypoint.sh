@@ -67,7 +67,7 @@ print(container['Name'])
   mkdir -p "$LOGS_FOLDER"
 
   echo "Initializing Filebeat..."
-  ${FILEBEAT_HOME}/filebeat -e -c ${FILEBEAT_HOME}filebeat.yml -v &
+  ${FILEBEAT_HOME}/filebeat -e -c ${FILEBEAT_HOME}/filebeat.yml -v &
 
   while true; do
     CONTAINERS=`getRunningContainers`
